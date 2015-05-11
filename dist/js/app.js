@@ -24371,6 +24371,13 @@ var HomePage = React.createClass({displayName: "HomePage",
 		TweetStore.removeChangeListener(this._onChange);
 	},
 
+	getTweets: function(username, hashtag){
+		$.get({
+
+
+		});
+	},
+
 	_onChange: function(){
 		this.setState({
 			tweets: TweetStore.getTweets(),
@@ -24383,7 +24390,9 @@ var HomePage = React.createClass({displayName: "HomePage",
 		return (
       React.createElement("div", null, 
         errors, 
-        React.createElement(SearchForm, null), 
+				React.createElement("input", {type: "text", id: "username", placeholder: "username"}), 
+				React.createElement("input", {type: "text", id: "hashtag", placeholder: "hashtag"}), 
+				React.createElement("button", {onClick: this.getTweets}, "Submit"), 
         React.createElement("div", {className: "list"}, 
           React.createElement(TweetsList, {tweets: this.state.tweets})
         )
@@ -24409,24 +24418,11 @@ var Tweet = React.createClass({displayName: "Tweet",
 var TweetsList = React.createClass({displayName: "TweetsList",
 	render: function(){
 		return (
-			React.createElement("ul", {className: ""}, 
-				this.props.tweets.map(function(tweet, index){
-					React.createElement(Tweet, {tweet: tweet, key: "tweet"+index})
-				})
-			)
-		)
-	}
-});
-
-
-var SearchForm = React.createClass({displayName: "SearchForm",
-	render: function(){
-		return (
-			React.createElement("div", null, 
-				React.createElement("input", {type: "text", placeholder: "username"}), 
-				React.createElement("input", {type: "text", placeholder: "hashtag"}), 
-				React.createElement("button", null, "Submit")
-			)
+				React.createElement("ul", {className: "tweetList"}, 
+					this.props.tweets.map(function(tweet, index){
+						React.createElement(Tweet, {tweet: tweet, key: "tweet"+index})
+					})
+				)
 		)
 	}
 });

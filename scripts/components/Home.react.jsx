@@ -4,6 +4,7 @@ var TweetStore = require('../stores/TweetStore.react.jsx');
 var ErrorNotice = require('../components/ErrorNotice.react.jsx');
 var TweetActionCreators = require('../actions/TweetActionCreators.react.jsx');
 var Router = require('react-router');
+var TwitterAppConstants = require('../constants/TwitterAppConstants.js');
 var Link = Router.Link;
 
 var HomePage = React.createClass({
@@ -24,6 +25,17 @@ var HomePage = React.createClass({
 		TweetStore.removeChangeListener(this._onChange);
 	},
 
+	getTweets: function(){
+		var username = $('#username').val();
+		var hashtag = $('#hashtag').val();
+		console.log(username.serialize());
+		console.log(hashtag.serialize());
+		$.get({
+			url: TwitterAppConstants.APIEndpoints.TWEETS + 
+
+		});
+	},
+
 	_onChange: function(){
 		this.setState({
 			tweets: TweetStore.getTweets(),
@@ -36,7 +48,9 @@ var HomePage = React.createClass({
 		return (
       <div>
         {errors}
-        <SearchForm/>
+				<input type="text" id="username" placeholder="username"/>
+				<input type="text" id="hashtag" placeholder="hashtag"/>
+				<button onClick={this.getTweets}>Submit</button>
         <div className="list">
           <TweetsList tweets={this.state.tweets} />
         </div>
@@ -62,24 +76,11 @@ var Tweet = React.createClass({
 var TweetsList = React.createClass({
 	render: function(){
 		return (
-			<ul className="">
-				{this.props.tweets.map(function(tweet, index){
-					<Tweet tweet={tweet} key={"tweet"+index}/>
-				})}
-			</ul>
-		)
-	}
-});
-
-
-var SearchForm = React.createClass({
-	render: function(){
-		return (
-			<div>
-				<input type="text" placeholder="username"/>
-				<input type="text" placeholder="hashtag"/>
-				<button>Submit</button>
-			</div>
+				<ul className="tweetList">
+					{this.props.tweets.map(function(tweet, index){
+						<Tweet tweet={tweet} key={"tweet"+index}/>
+					})}
+				</ul>
 		)
 	}
 });
